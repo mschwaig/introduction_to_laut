@@ -102,7 +102,7 @@ mschwaig@mutalisk ~/g/laut (main)> nix derivation show nixpkgs/979daf34c8cacebcd
 }
 ```
 
-The `inputSrcs` are leaves at the edge of the dependency tree. Their store paths are based on a hash of their contents. We don't know how they were derived.
+The `inputSrcs` are leaves at the edge of the dependency tree. Their store paths are based on a hash of their contents. We took them in as content, think source code or some opaque blob checked into the repo.
 
 The `inputDrvs` are derivations, so they are nodes within the dependency tree, and their address is based on the hash of the derivation that builds them, not the content. So it's a hash of the build recipe.
 Same is true for the output path of this derivation itself.
@@ -123,10 +123,9 @@ Deriver: 5g60vyp4cbgwl12pav5apyi571smp62s-hello-2.12.2.drv
 Sig: cache.nixos.org-1:qzsDAeq7dRyXpCyBtj4t+yZjaBFQcNf+Tp0XMVEm8/p1XS8GtA1cSYngx6fI07ib61ZNd0A8tWypIC0KxHs4AA==
 ```
 
-The code to verify this signature is in ....
-
-but I wrote a small python script to verify it instead, so we can do it standalone:
-
+The code to verify this signature is in https://github.com/NixOS/nix/blob/e3febfcd532adb23ca05ac465a2b907d6f1a3529/src/libstore/path-info.cc#L25
+`
+but I wrote a small python script to verify it instead, so we can do it standalone: [verify_nix_signature.py](verify_nix_signature.py)
 
 
 Mainly the signature associates
@@ -362,3 +361,12 @@ This leads us into discussing some aspects of laut:
 * looking at verification
 * talking about support for IA sigantures
 * talking link to builder software state and remote attestation
+
+---
+
+What do people think about vibenix?
+
+My panel at NixCon:
+https://discourse.nixos.org/t/input-for-supply-chain-security-panel-at-nixcon/68172
+Please ask questions, and if you know somebody who should be involved recommend them to me.
+
