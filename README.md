@@ -243,7 +243,7 @@ So this does not look like it solves our problem, but
 
 This one is a pain to obtain, because we need to build all the dependencies of hello first, but it it addresses the 1st issue we mentioned above.
 
-I'm pulling this one out of the `input.debug` section of a laut signature at `tests/data/lookup_by_name/builderA_bcda8d54470fea3b.json`, so the `rdrv_path` line should be deleted and it's value should go in the place of the "rdrv_json_preimage" key:
+I'm pulling this one out of the `input.debug` section of a laut signature at `tests/data/lookup_by_name/builderA_bcda8d54470fea3b.json`, so the `rdrv_path` line should be deleted and it's value should go in the place of the `rdrv_json_preimage` key:
 
 ```
   "rdrv_path": "/nix/store/7gsw68f2iawn9q8vv04zh9xql14268pw-hello-2.12.1.drv",
@@ -342,19 +342,19 @@ I'm a bit annoyed myself by choosing S3 as the basis for the cache to demo this,
 
 We're going to look at this using `https://gchq.github.io/CyberChef/`.
 
-Basically there's two signatures in each file, since they are JWS they consist of 3 parts of BASE64 [].[].[], the 3rd of which is the actual signature.
+Basically there's two signatures in each file, since they are JWS they consist of 3 parts of base64 encoded data [b64_header].[b64_payload].[b64_signature].
 
 If we past the first or second component of one of them into the input section cyberchef with this recipe https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,false)JSON_Beautify('%20%20%20%20',false,true), we get the actual contents:
 
 First the header bits:
 ```
-
+TODO
 ```
 
 Then the payload:
 
 ```
-
+TODO
 ```
 
 We can also [diff the same signatures which are created by lix and Nix](ihttps://gchq.github.io/CyberChef/#recipe=Diff('%5C%5Cn%5C%5Cn%5C%5Cn','Character',true,true,false,false)&input=ewogICAgImluIjogewogICAgICAgICJyZHJ2X2pzb24iOiAiRXdVaVlpckVCcklsRGx4M3d4ci03VlZVa2FmUno2bGtnWVJiZkg2ZVJlQSIsCiAgICAgICAgInJkcnZfYXRlcm1fY2EiOiAia2NkZm1kbXc4bmFqOGZrYXZkaWQ4ZnhkYmptcWF3MjciLAogICAgICAgICJkZWJ1ZyI6IHsKICAgICAgICAgICAgImRydl9uYW1lIjogImJvb3RzdHJhcC1zdGFnZTAtZ2xpYmMtYm9vdHN0cmFwRmlsZXMiLAogICAgICAgICAgICAicmRydl9wYXRoIjogIi9uaXgvc3RvcmUva2NkZm1kbXc4bmFqOGZrYXZkaWQ4ZnhkYmptcWF3MjctYm9vdHN0cmFwLXN0YWdlMC1nbGliYy1ib290c3RyYXBGaWxlcy5kcnYiLAogICAgICAgICAgICAicmRydl9qc29uX3ByZWltYWdlIjogInsgLi4uIHNhbWUgZXhjZXB0IC4uLiBcIm91dHB1dHNcIjp7XCJvdXRcIjp7XCJoYXNoQWxnb1wiOlwicjpzaGEyNTZcIn19LFwic3lzdGVtXCI6XCJ4ODZfNjQtbGludXhcIn0iLAogICAgICAgICAgICAicmRydl9jb21wdXRlZF9wYXRoIjogIi9uaXgvc3RvcmUva2NkZm1kbXc4bmFqOGZrYXZkaWQ4ZnhkYmptcWF3MjctYm9vdHN0cmFwLXN0YWdlMC1nbGliYy1ib290c3RyYXBGaWxlcy5kcnYiLAogICAgICAgICAgICAicmRydl9hdGVybV9jYV9wcmVpbWFnZSI6IC4uLiBzYW1lIC4uLgogICAgICAgIH0KICAgIH0sCiAgICAib3V0IjogewogICAgICAgICJjYXN0b3JlLWVudHJ5IjogewogICAgICAgICAgICAib3V0IjogIkNpUVNJRXFOenJBTnRWWFRSVkkwWFZlXzZrWmlkTGNzRlJ3WXAwVEFTSUZQTzBTOEdBUSIKICAgICAgICB9LAogICAgICAgICJuaXgiOiB7CiAgICAgICAgICAgICJvdXQiOiB7CiAgICAgICAgICAgICAgICAiaGFzaEFsZ28iOiAicjpzaGEyNTYiLAogICAgICAgICAgICAgICAgInBhdGgiOiAiL25peC9zdG9yZS80eWpjcXZneHc4ZmN5MWg5ejV4bjJpbHByazJscW0xNy1ib290c3RyYXAtc3RhZ2UwLWdsaWJjLWJvb3RzdHJhcEZpbGVzIiwKICAgICAgICAgICAgICAgICJoYXNoIjogInNoYTI1NjoxOGJkaGxzaXFtczUyeW5hYWIxeTZrNDVqenpobDZ6MnAwcDBrYmEycGZiN2QwbTEzaXZuIgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfSwKICAgICJidWlsZGVyIjogewogICAgICAgICJyZWJ1aWxkX2lkIjogMzA3NDk5ODUzLAogICAgICAgICJzdG9yZV9yb290IjogIi9uaXgvc3RvcmUiLAogICAgICAgICJuaXhfZmxhdm9yIjogImxpeCIsCiAgICAgICAgIm5peF92ZXJzaW9uIjogIjIuOTEuMSIKICAgIH0KfQoKCnsKICAgICJpbiI6IHsKICAgICAgICAicmRydl9qc29uIjogIjgzX2RqUDYtUzFUbmNQS3NlcXdTQ0JyZ080MWNQNUJrYzVxck5vU0gzQWsiLAogICAgICAgICJyZHJ2X2F0ZXJtX2NhIjogImtjZGZtZG13OG5hajhma2F2ZGlkOGZ4ZGJqbXFhdzI3IiwKICAgICAgICAiZGVidWciOiB7CiAgICAgICAgICAgICJkcnZfbmFtZSI6ICJib290c3RyYXAtc3RhZ2UwLWdsaWJjLWJvb3RzdHJhcEZpbGVzIiwKICAgICAgICAgICAgInJkcnZfcGF0aCI6ICIvbml4L3N0b3JlL2tjZGZtZG13OG5hajhma2F2ZGlkOGZ4ZGJqbXFhdzI3LWJvb3RzdHJhcC1zdGFnZTAtZ2xpYmMtYm9vdHN0cmFwRmlsZXMuZHJ2IiwKICAgICAgICAgICAgInJkcnZfanNvbl9wcmVpbWFnZSI6ICJ7IC4uLiBzYW1lIGV4Y2VwdCAuLi4gXCJvdXRwdXRzXCI6e1wib3V0XCI6e1wiaGFzaEFsZ29cIjpcInNoYTI1NlwiLFwibWV0aG9kXCI6XCJuYXJcIn19LFwic3lzdGVtXCI6XCJ4ODZfNjQtbGludXhcIn0iLAogICAgICAgICAgICAicmRydl9jb21wdXRlZF9wYXRoIjogIi9uaXgvc3RvcmUva2NkZm1kbXc4bmFqOGZrYXZkaWQ4ZnhkYmptcWF3MjctYm9vdHN0cmFwLXN0YWdlMC1nbGliYy1ib290c3RyYXBGaWxlcy5kcnYiLAogICAgICAgICAgICAicmRydl9hdGVybV9jYV9wcmVpbWFnZSI6IC4uLiBzYW1lIC4uLgogICAgICAgIH0KICAgIH0sCiAgICAib3V0IjogewogICAgICAgICJjYXN0b3JlLWVudHJ5IjogewogICAgICAgICAgICAib3V0IjogIkNpUVNJRXFOenJBTnRWWFRSVkkwWFZlXzZrWmlkTGNzRlJ3WXAwVEFTSUZQTzBTOEdBUSIKICAgICAgICB9LAogICAgICAgICJuaXgiOiB7CiAgICAgICAgICAgICJvdXQiOiB7CiAgICAgICAgICAgICAgICAiaGFzaEFsZ28iOiAic2hhMjU2IiwKICAgICAgICAgICAgICAgICJtZXRob2QiOiAibmFyIiwKICAgICAgICAgICAgICAgICJwYXRoIjogIi9uaXgvc3RvcmUvNHlqY3F2Z3h3OGZjeTFoOXo1eG4yaWxwcmsybHFtMTctYm9vdHN0cmFwLXN0YWdlMC1nbGliYy1ib290c3RyYXBGaWxlcyIsCiAgICAgICAgICAgICAgICAiaGFzaCI6ICJzaGEyNTY6MThiZGhsc2lxbXM1MnluYWFiMXk2azQ1anp6aGw2ejJwMHAwa2JhMnBmYjdkMG0xM2l2biIKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0sCiAgICAiYnVpbGRlciI6IHsKICAgICAgICAicmVidWlsZF9pZCI6IDE2OTAwMDQyMjEsCiAgICAgICAgInN0b3JlX3Jvb3QiOiAiL25peC9zdG9yZSIsCiAgICAgICAgIm5peF9mbGF2b3IiOiAibml4IiwKICAgICAgICAibml4X3ZlcnNpb24iOiAiMi4yOC4zIgogICAgfQp9).
@@ -362,8 +362,8 @@ We can also [diff the same signatures which are created by lix and Nix](ihttps:/
 This leads us into discussing some aspects of laut:
 * the quorum stuff
 * looking at verification
-* talking about support for IA sigantures
-* talking link to builder software state and remote attestation
+* support for IA sigantures
+* link to builder software state and remote attestation
 
 ---
 
