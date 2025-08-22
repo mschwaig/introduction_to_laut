@@ -4,9 +4,12 @@ This is my talk about https://github.com/mschwaig/laut at the the [NixOS User Gr
 
 Laut is a proposed new signature format for Nix.
 Since this is a pretty technical topic, we will try to look at it from the user perspective, and I will try to show concrete things on the command line.
+
+**Total presentation time: 42 minutes (18:30 - 19:12)**
+
 Let's start with the base line:
 
-### Looking up a signature based on the legacy signature format
+### Looking up a signature based on the legacy signature format (18:30 - 18:42)
 
 We're just calling the current format legacy here, let's see what that does. There is a glossary at https://github.com/mschwaig/laut.
 
@@ -140,7 +143,7 @@ A few key problems:
 4. outputs have underspecified dependencies as well
 5. it links things at the output path level instead of the derivation level
 
-### How CA derivations solve the problem with `inputDrvs`
+### How CA derivations solve the problem with `inputDrvs` (18:42 - 18:52)
 
 With the store path of the flake from earlier, we can get the CA version of hello:
 ```
@@ -306,7 +309,7 @@ I'm pulling this one out of the `input.debug` section of a laut signature at `te
 
 There are still some issues left though.
 
-### The trouble with CA derivations as implemented in Nix
+### The trouble with CA derivations as implemented in Nix (18:52 - 18:56)
 
 * The interop with IA derivations and the mixed store means there's still things that factor into the build, which we don't have a precise identity for. This it true for both inputs and outputs
 * They have a differrent signature format at the `realizations` endpoint, but it's a bit of a mess.
@@ -315,7 +318,7 @@ There are still some issues left though.
 * They need rewriting, at least of the output path, and rewriting breaks stuff.
 * IMO resolved derivations and dependency resolution should be user facing to make them understandable.
 
-### let's get one of those signatures laut creates
+### let's get one of those signatures laut creates (18:56 - 19:02)
 
 We first build and run the signing part of the large VM test (this takes hours):
 ```
@@ -335,7 +338,7 @@ As a shortcut you can also play with the smaller tests, or get pretty much the r
 
 I'm a bit annoyed myself by choosing S3 as the basis for the cache to demo this, because it would be much nicer to just `curl` a URL.
 
-### and look at it
+### and look at it (19:02 - 19:12)
 
 We're going to look at this using `https://gchq.github.io/CyberChef/`.
 
